@@ -11,26 +11,37 @@ namespace ConfigurationManagementProject
         static void Main(string[] args)
         {
             int option = MainMenu();
+            CI_Manager myManager = new CI_Manager();
 
             while (option > 0 && option <= 6)
             {
                 switch (option)
                 {
                     case 1:
+                        Console.Clear();
+                        myManager.AddConfigurationItem();
+                        Console.ReadKey();
+                        option = MainMenu();
+
                         break;
                     case 2:
+                        Console.Clear();
                         break;
 
                     case 3:
+                        Console.Clear();
                         break;
 
                     case 4:
+                        Console.Clear();
                         break;
 
                     case 5:
+                        Console.Clear();
                         break;
 
                     case 6:
+                        Console.Clear();
                         break;
                 }
             }
