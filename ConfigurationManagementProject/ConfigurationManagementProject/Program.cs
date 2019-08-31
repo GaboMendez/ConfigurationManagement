@@ -22,26 +22,40 @@ namespace ConfigurationManagementProject
                         myManager.AddConfigurationItem();
                         Console.ReadKey();
                         option = MainMenu();
-
-                        break;
+                        continue;
                     case 2:
                         Console.Clear();
-                        break;
+                        myManager.UpdateConfigurationItem();
+                        Console.ReadKey();
+                        option = MainMenu();
+                        continue;
 
                     case 3:
                         Console.Clear();
-                        break;
+                        myManager.AddDependecy();
+                        Console.ReadKey();
+                        option = MainMenu();
+                        continue;
 
                     case 4:
                         Console.Clear();
-                        break;
+                        myManager.ListConfigurationItem();
+                        Console.ReadKey();
+                        option = MainMenu();
+                        continue;
 
                     case 5:
                         Console.Clear();
-                        break;
+                        myManager.RiskAnalysis();
+                        Console.ReadKey();
+                        option = MainMenu();
+                        continue;
 
                     case 6:
                         Console.Clear();
+                        Console.WriteLine("Adios!");
+                        Console.ReadKey();
+                        Environment.Exit(0);
                         break;
                 }
             }
