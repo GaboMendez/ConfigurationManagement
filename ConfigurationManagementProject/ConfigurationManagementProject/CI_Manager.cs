@@ -50,7 +50,7 @@ namespace ConfigurationManagementProject
             using (var db = new ConfigurationManagmentEntities())
             {
                 var items = db.ConfigurationItems.SqlQuery("select * from ConfigurationItem").ToList();
-
+            
                 Console.WriteLine("Listar Configuration Item's!");
                 int count = 1;
                 foreach (var item in items)
@@ -63,21 +63,14 @@ namespace ConfigurationManagementProject
                     else
                     {
                         state = "No Activo";
-
                     }
+
                     Console.WriteLine($"{count}- {item.CIName} | V: {item.CIVersion} | Estado:{state}");
-                count++;
+                    count++;
 
-
-                    }
-                       
-
-                
-
-
-
-                }
+                }                  
             }
+        }
 
         
 
