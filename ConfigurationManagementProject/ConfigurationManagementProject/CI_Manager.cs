@@ -49,7 +49,7 @@ namespace ConfigurationManagementProject
         {
             using (var db = new ConfigurationManagmentEntities())
             {
-                var items = db.ConfigurationItems.SqlQuery("select * from ConfigurationManagmentEntities").ToList();
+                var items = db.ConfigurationItems.SqlQuery("select * from ConfigurationItem").ToList();
 
                 Console.WriteLine("Listar Configuration Item's!");
                 int count = 1;
