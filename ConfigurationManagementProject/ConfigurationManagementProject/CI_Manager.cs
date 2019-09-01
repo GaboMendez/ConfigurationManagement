@@ -87,7 +87,62 @@ namespace ConfigurationManagementProject
         public void UpdateConfigurationItem()
         {
             Console.WriteLine("Actualizando Configuration Item!");
+            Console.WriteLine("_________________________________");
+            this.ListConfigurationItem();
+            Console.WriteLine("-Escriba el ID del CI al que quiere Actualizar la Version: ");
+            int updatingCI = Convert.ToInt32(Console.ReadLine());
 
+            using (var db = new ConfigurationManagmentEntities())
+            {
+                var myCI = db.ConfigurationItems.SqlQuery($"select * from ConfigurationItem where id = '{updatingCI}'").ToList().SingleOrDefault();
+                if (myCI.States != "A")
+                {
+                    Console.WriteLine("El Configuration Item No Esta Activo!");
+                    return;
+                }
+                else
+                {
+                    string[] oldVersion = myCI.CIVersion.Split('.');
+                    Console.WriteLine("***Escriba la nueva Version del CI en el Formato MAJOR.MINOR.PATCH");
+                    string newVersion = Console.ReadLine();
+                    string[] versions = newVersion.Split('.');
+
+                    bool yesDependecy = hasDependecies(updatingCI);
+
+                    if(versions[0] != oldVersion[0])
+                    {
+                        if (yesDependecy)
+                        {
+                            Console.WriteLine("ALERT: Este CI Tiene Dependencia y estas Actualizando su MAJOR!!!");
+                            Console.WriteLine("     No se puede Actualizar la Version del CI!");
+                            return;
+                        }
+                        else
+                        {
+                            myCI.CIVersion = newVersion;
+                            Console.WriteLine("Se ha Actualizado la Version del Configuration Item!");
+                        }
+                    }
+                    else
+                    {
+                        myCI.CIVersion = newVersion;
+                        Console.WriteLine("Se ha Actualizado la Version del Configuration Item!");
+                    }
+                    db.SaveChanges();
+                }
+            }
+
+        }
+        bool hasDependecies(int ID)
+        {
+            using (var db = new ConfigurationManagmentEntities())
+            {
+                var myItem = db.DependencyItems.SqlQuery($"select * from DependencyItem where IDBaseCI = '{ID}'").ToList();
+                if (myItem.Count() > 0)
+                    return true;
+                else
+                    return false;
+            }
         }
 
         public void ListConfigurationItem()
