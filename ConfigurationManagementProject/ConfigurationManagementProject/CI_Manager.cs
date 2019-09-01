@@ -50,7 +50,38 @@ namespace ConfigurationManagementProject
 
         public void AddDependecy()
         {
-            Console.WriteLine("Agregando Nueva Dependencia!");
+            if (this.not_item)
+            {
+                Console.WriteLine("No se ha añadido ningun Configuration Item!");
+            }
+            else
+            {
+                Console.WriteLine("Agregando Nueva Dependencia!");
+                Console.WriteLine();
+                this.ListConfigurationItem();
+                Console.WriteLine();
+                Console.WriteLine("-Escriba el ID del CI al que le quiere añadir Dependencia: ");
+                int myIDBase = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("-Escriba el ID de la Dependencia del CI");
+                int myIDDependecy = Convert.ToInt32(Console.ReadLine());
+
+                using (var db = new ConfigurationManagmentEntities())
+                {
+                    var Obj = new DependencyItem();
+                    Obj.IDBaseCI = myIDBase;
+                    Obj.IDDependencyCI = myIDDependecy;
+                    Obj.States = "A";
+                    db.DependencyItems.Add(Obj);
+
+                    var baseCI = db.ConfigurationItems.SqlQuery($"select * from ConfigurationItem where id = '{myIDBase}'").ToList().SingleOrDefault();
+                    string nameBase = baseCI.CIName;
+                    var dependecyCI = db.ConfigurationItems.SqlQuery($"select * from ConfigurationItem where id = '{myIDDependecy}'").ToList().SingleOrDefault();
+                    string nameDependecy = dependecyCI.CIName;
+
+                    Console.WriteLine($"Se ha añadido la Dependencia '{nameDependecy}' al Configuration Item '{nameBase}'");
+                    db.SaveChanges();
+                }
+            }
 
         }
         public void UpdateConfigurationItem()
@@ -64,25 +95,30 @@ namespace ConfigurationManagementProject
             using (var db = new ConfigurationManagmentEntities())
             {
                 var items = db.ConfigurationItems.SqlQuery("select * from ConfigurationItem").ToList();
-            
-                Console.WriteLine("Listar Configuration Item's!");
-                int count = 1;
-                foreach (var item in items)
+                if (this.not_item)
                 {
-                    string state = "";
-                    if (item.States == "A")
+                    Console.WriteLine("No se ha añadido ningun Configuration Item!");
+                }
+                else
+                {
+                    Console.WriteLine("Configuration Items Agregados:");
+                    int count = 1;
+                    foreach (var item in items)
                     {
-                        state = "Activo";
-                    }
-                    else
-                    {
-                        state = "No Activo";
+                        string state = "";
+                        if (item.States == "A")
+                        {
+                            state = "Activo";
+                        }
+                        else
+                        {
+                            state = "No Activo";
+                        }
+                        Console.WriteLine($"{count}- {item.CIName} | V:{item.CIVersion} | Estado:{state}");
+                        count++;
                     }
 
-                    Console.WriteLine($"{count}- {item.CIName} | V: {item.CIVersion} | Estado:{state}");
-                    count++;
-
-                }                  
+                }
             }
         }
 
