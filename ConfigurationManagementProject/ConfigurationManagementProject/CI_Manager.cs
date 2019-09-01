@@ -47,9 +47,39 @@ namespace ConfigurationManagementProject
 
         public void ListConfigurationItem()
         {
-            Console.WriteLine("Listar Configuration Item's!");
+            using (var db = new ConfigurationManagmentEntities())
+            {
+                var items = db.ConfigurationItems.SqlQuery("select * from ConfigurationManagmentEntities").ToList();
 
-        }
+                Console.WriteLine("Listar Configuration Item's!");
+                int count = 1;
+                foreach (var item in items)
+                {
+                    string state = "";
+                    if (item.States == "A")
+                    {
+                        state = "Activo";
+                    }
+                    else
+                    {
+                        state = "No Activo";
+
+                    }
+                    Console.WriteLine($"{count}- {item.CIName} | V: {item.CIVersion} | Estado:{state}");
+                count++;
+
+
+                    }
+                       
+
+                
+
+
+
+                }
+            }
+
+        
 
         public void RiskAnalysis()
         {
