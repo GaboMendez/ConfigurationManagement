@@ -128,6 +128,34 @@ namespace ConfigurationManagementProject
         {
             Console.WriteLine("Analisis de Configuration Item y Dependencias!");
 
+            if (this.not_item)
+            {
+                Console.WriteLine("No se ha añadido ningun Configuration Item!");
+            }
+            else
+            {
+                using (var db = new ConfigurationManagmentEntities())
+                {
+                    var ConfigurationItems = db.ConfigurationItems.SqlQuery("select * from ConfigurationItem").ToList();
+                    foreach (var item in ConfigurationItems)
+                    {
+                        var baseCI = db.ConfigurationItems.SqlQuery($"select * from ConfigurationItem where ID = '{item.ID}'").ToList().SingleOrDefault();
+                        var depedenciesCI = db.DependencyItems.SqlQuery($"select * from DependencyItem where IDBaseCI = '{baseCI.ID}'").ToList();
+
+                        Console.WriteLine($"***ID: {item.ID} | CI: '{baseCI.CIName}' | V: {baseCI.CIVersion}");
+                        Console.WriteLine("         Dependencias: ");
+                        int count = 1;
+                        foreach (var dep in depedenciesCI)
+                        {
+                            var myDep = db.ConfigurationItems.SqlQuery($"select * from ConfigurationItem where ID = '{dep.IDDependencyCI}'").ToList().FirstOrDefault();
+                            Console.WriteLine($"        {count}) {myDep.CIName}     | V: {myDep.CIVersion}");
+                            count++;
+                        }
+                        Console.WriteLine();
+                    }
+                }
+            }
+
         }
     }
 }
