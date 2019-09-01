@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ConfigurationManagmentModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ConfigurationItem">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CIName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="CIDescripton" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CIVersion" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="States" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="DependencyItem">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDBaseCI" Type="int" Nullable="false" />
+          <Property Name="IDDependencyCI" Type="int" Nullable="false" />
+          <Property Name="States" Type="char" MaxLength="1" />
+        </EntityType>
+        <Association Name="FK__Dependenc__IDBas__398D8EEE">
+          <End Role="ConfigurationItem" Type="Self.ConfigurationItem" Multiplicity="1" />
+          <End Role="DependencyItem" Type="Self.DependencyItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConfigurationItem">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DependencyItem">
+              <PropertyRef Name="IDBaseCI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Dependenc__IDDep__3A81B327">
+          <End Role="ConfigurationItem" Type="Self.ConfigurationItem" Multiplicity="1" />
+          <End Role="DependencyItem" Type="Self.DependencyItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConfigurationItem">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DependencyItem">
+              <PropertyRef Name="IDDependencyCI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ConfigurationManagmentModelStoreContainer">
+          <EntitySet Name="ConfigurationItem" EntityType="Self.ConfigurationItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DependencyItem" EntityType="Self.DependencyItem" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Dependenc__IDBas__398D8EEE" Association="Self.FK__Dependenc__IDBas__398D8EEE">
+            <End Role="ConfigurationItem" EntitySet="ConfigurationItem" />
+            <End Role="DependencyItem" EntitySet="DependencyItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Dependenc__IDDep__3A81B327" Association="Self.FK__Dependenc__IDDep__3A81B327">
+            <End Role="ConfigurationItem" EntitySet="ConfigurationItem" />
+            <End Role="DependencyItem" EntitySet="DependencyItem" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ConfigurationManagmentModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ConfigurationItem">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CIName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CIDescripton" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CIVersion" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="States" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="DependencyItems" Relationship="Self.FK__Dependenc__IDBas__398D8EEE" FromRole="ConfigurationItem" ToRole="DependencyItem" />
+          <NavigationProperty Name="DependencyItems1" Relationship="Self.FK__Dependenc__IDDep__3A81B327" FromRole="ConfigurationItem" ToRole="DependencyItem" />
+        </EntityType>
+        <EntityType Name="DependencyItem">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDBaseCI" Type="Int32" Nullable="false" />
+          <Property Name="IDDependencyCI" Type="Int32" Nullable="false" />
+          <Property Name="States" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="ConfigurationItem" Relationship="Self.FK__Dependenc__IDBas__398D8EEE" FromRole="DependencyItem" ToRole="ConfigurationItem" />
+          <NavigationProperty Name="ConfigurationItem1" Relationship="Self.FK__Dependenc__IDDep__3A81B327" FromRole="DependencyItem" ToRole="ConfigurationItem" />
+        </EntityType>
+        <Association Name="FK__Dependenc__IDBas__398D8EEE">
+          <End Role="ConfigurationItem" Type="Self.ConfigurationItem" Multiplicity="1" />
+          <End Role="DependencyItem" Type="Self.DependencyItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConfigurationItem">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DependencyItem">
+              <PropertyRef Name="IDBaseCI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Dependenc__IDDep__3A81B327">
+          <End Role="ConfigurationItem" Type="Self.ConfigurationItem" Multiplicity="1" />
+          <End Role="DependencyItem" Type="Self.DependencyItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConfigurationItem">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DependencyItem">
+              <PropertyRef Name="IDDependencyCI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ConfigurationManagmentEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ConfigurationItems" EntityType="Self.ConfigurationItem" />
+          <EntitySet Name="DependencyItems" EntityType="Self.DependencyItem" />
+          <AssociationSet Name="FK__Dependenc__IDBas__398D8EEE" Association="Self.FK__Dependenc__IDBas__398D8EEE">
+            <End Role="ConfigurationItem" EntitySet="ConfigurationItems" />
+            <End Role="DependencyItem" EntitySet="DependencyItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Dependenc__IDDep__3A81B327" Association="Self.FK__Dependenc__IDDep__3A81B327">
+            <End Role="ConfigurationItem" EntitySet="ConfigurationItems" />
+            <End Role="DependencyItem" EntitySet="DependencyItems" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ConfigurationManagmentModelStoreContainer" CdmEntityContainer="ConfigurationManagmentEntities">
+          <EntitySetMapping Name="ConfigurationItems">
+            <EntityTypeMapping TypeName="ConfigurationManagmentModel.ConfigurationItem">
+              <MappingFragment StoreEntitySet="ConfigurationItem">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CIName" ColumnName="CIName" />
+                <ScalarProperty Name="CIDescripton" ColumnName="CIDescripton" />
+                <ScalarProperty Name="CIVersion" ColumnName="CIVersion" />
+                <ScalarProperty Name="States" ColumnName="States" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DependencyItems">
+            <EntityTypeMapping TypeName="ConfigurationManagmentModel.DependencyItem">
+              <MappingFragment StoreEntitySet="DependencyItem">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="IDBaseCI" ColumnName="IDBaseCI" />
+                <ScalarProperty Name="IDDependencyCI" ColumnName="IDDependencyCI" />
+                <ScalarProperty Name="States" ColumnName="States" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

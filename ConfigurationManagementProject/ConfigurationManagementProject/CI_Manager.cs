@@ -11,6 +11,27 @@ namespace ConfigurationManagementProject
         public void AddConfigurationItem()
         {
             Console.WriteLine("Agregando Nuevo Configuration Item!");
+            Console.WriteLine("1. Escribir el Nombre del CI");
+            string name = Console.ReadLine();
+            Console.WriteLine("2. Escribir la Descripcion del CI");
+            string description = Console.ReadLine();
+            Console.WriteLine("3. Escribir la Version del CI");
+            string version = Console.ReadLine();
+
+            using (var db = new ConfigurationManagmentEntities())
+            {
+                var Obj = new ConfigurationItem();
+                Obj.CIName = name;
+                Obj.CIDescripton = description;
+                Obj.CIVersion = version;
+                Obj.States = "A";
+
+                db.ConfigurationItems.Add(Obj);
+                db.SaveChanges();
+                Console.WriteLine("Se ha Agregado el Configuration Item");
+
+            }
+
         }
 
         public void AddDependecy()
