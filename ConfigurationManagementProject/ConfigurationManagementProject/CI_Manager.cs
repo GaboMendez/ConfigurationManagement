@@ -21,6 +21,34 @@ namespace ConfigurationManagementProject
                     not_item = true;
             }
         }
+
+        public void DeprecateConfigurationItem()
+        {
+            Console.WriteLine("Deprecando Configuration Item!");
+            Console.WriteLine("_______________________________");
+            this.ListConfigurationItem();
+            Console.WriteLine("-Escriba el ID del CI al que quiere Deprecar: ");
+            int deprecatingCI = Convert.ToInt32(Console.ReadLine());
+
+            using (var db = new ConfigurationManagmentEntities())
+            {
+                var myCI = db.ConfigurationItems.SqlQuery($"select * from ConfigurationItem where id = '{deprecatingCI}'").ToList().SingleOrDefault();
+                bool yesDependency = hasDependecies(deprecatingCI);
+
+                if (yesDependency)
+                {
+                    Console.WriteLine("ALERT: El Configuration Item Seleccionado tiene Dependencia");
+                    Console.WriteLine("No es posible Deprecar el CI Seleccionado!");
+                }
+                else
+                {
+                    myCI.States = "I";
+                    Console.WriteLine("El Configuration Item ha sido Deprecado!");
+                    db.SaveChanges();
+                }
+            }
+        }
+
         public void AddConfigurationItem()
         {
             //INITIAL COMMIT
@@ -78,8 +106,18 @@ namespace ConfigurationManagementProject
                     var dependecyCI = db.ConfigurationItems.SqlQuery($"select * from ConfigurationItem where id = '{myIDDependecy}'").ToList().SingleOrDefault();
                     string nameDependecy = dependecyCI.CIName;
 
-                    Console.WriteLine($"Se ha añadido la Dependencia '{nameDependecy}' al Configuration Item '{nameBase}'");
-                    db.SaveChanges();
+                    if(baseCI.States != "A" || dependecyCI.States != "A")
+                    {
+                        Console.WriteLine("ALERT: No se puede realizar cambios a Configuration Items que Esten Deprecados!");
+                        return;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Se ha añadido la Dependencia '{nameDependecy}' al Configuration Item '{nameBase}'");
+                        db.SaveChanges();
+                    }
+
+
                 }
             }
 
@@ -167,7 +205,7 @@ namespace ConfigurationManagementProject
                         }
                         else
                         {
-                            state = "No Activo";
+                            state = "Deprecado";
                         }
                         Console.WriteLine($"{count}- {item.CIName} | V:{item.CIVersion} | Estado:{state}");
                         count++;
@@ -207,6 +245,18 @@ namespace ConfigurationManagementProject
                             count++;
                         }
                         Console.WriteLine();
+                    }
+                    Console.WriteLine("______________________________");
+                    Console.WriteLine("Configuration Item's Deprecados:");
+                    int countR = 1;
+                    foreach (var item in ConfigurationItems)
+                    {
+                        if (item.States != "A")
+                        {
+                            Console.WriteLine($"{countR}) {item.CIName} | V: {item.CIVersion} | Estado: Deprecado" );
+                            countR++;
+
+                        }
                     }
                 }
             }

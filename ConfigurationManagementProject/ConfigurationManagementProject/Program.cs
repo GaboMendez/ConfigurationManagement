@@ -53,7 +53,7 @@ namespace ConfigurationManagementProject
 
                     case 6:
                         Console.Clear();
-                        myManager.ReprecarConfigurationItem();
+                        myManager.DeprecateConfigurationItem();
                         Console.ReadKey();
                         option = MainMenu();
                         break;
@@ -78,7 +78,7 @@ namespace ConfigurationManagementProject
             Console.WriteLine("3) Agregar Dependencia");
             Console.WriteLine("4) Listar Configuration Item's");
             Console.WriteLine("5) Analisis de Riesgo");
-            Console.WriteLine("6) Reprecar Configuration Item");
+            Console.WriteLine("6) Deprecar Configuration Item");
             Console.WriteLine("7) Salir");
             ret = Convert.ToInt32(Console.ReadLine());
 
