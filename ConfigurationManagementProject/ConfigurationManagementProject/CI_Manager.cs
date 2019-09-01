@@ -232,16 +232,29 @@ namespace ConfigurationManagementProject
                     var ConfigurationItems = db.ConfigurationItems.SqlQuery("select * from ConfigurationItem").ToList();
                     foreach (var item in ConfigurationItems)
                     {
+                        string baseState = "Activo";
+
                         var baseCI = db.ConfigurationItems.SqlQuery($"select * from ConfigurationItem where ID = '{item.ID}'").ToList().SingleOrDefault();
                         var depedenciesCI = db.DependencyItems.SqlQuery($"select * from DependencyItem where IDBaseCI = '{baseCI.ID}'").ToList();
 
-                        Console.WriteLine($"***ID: {item.ID} | CI: '{baseCI.CIName}' | V: {baseCI.CIVersion}");
+                        if (baseCI.States != "A")
+                        {
+                            baseState = "Deprecado";
+                        }
+                        Console.WriteLine($"***ID: {item.ID} | CI: '{baseCI.CIName}' | V: {baseCI.CIVersion} | Estado: {baseState}");
                         Console.WriteLine("         Dependencias: ");
                         int count = 1;
                         foreach (var dep in depedenciesCI)
                         {
+                            string depState = "Activo";
+
                             var myDep = db.ConfigurationItems.SqlQuery($"select * from ConfigurationItem where ID = '{dep.IDDependencyCI}'").ToList().FirstOrDefault();
-                            Console.WriteLine($"        {count}) {myDep.CIName}     | V: {myDep.CIVersion}");
+
+                            if (myDep.States != "A")
+                            {
+                                depState = "Deprecado";
+                            }
+                            Console.WriteLine($"        {count}) {myDep.CIName}     | V: {myDep.CIVersion} |Estado: {depState}");
                             count++;
                         }
                         Console.WriteLine();
