@@ -53,6 +53,13 @@ namespace ConfigurationManagementProject
 
                     case 6:
                         Console.Clear();
+                        myManager.ReprecarConfigurationItem();
+                        Console.ReadKey();
+                        option = MainMenu();
+                        break;
+
+                    case 7:
+                        Console.Clear();
                         Console.WriteLine("Adios!");
                         Console.ReadKey();
                         Environment.Exit(0);
@@ -71,10 +78,11 @@ namespace ConfigurationManagementProject
             Console.WriteLine("3) Agregar Dependencia");
             Console.WriteLine("4) Listar Configuration Item's");
             Console.WriteLine("5) Analisis de Riesgo");
-            Console.WriteLine("6) Salir");
+            Console.WriteLine("6) Reprecar Configuration Item");
+            Console.WriteLine("7) Salir");
             ret = Convert.ToInt32(Console.ReadLine());
 
-            if(ret <=0 || ret > 6)
+            if(ret <=0 || ret > 7)
             {
                 Console.WriteLine("Opcion Invalida!");
                 Console.ReadKey();
