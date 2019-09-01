@@ -8,6 +8,19 @@ namespace ConfigurationManagementProject
 {
     public class CI_Manager
     {
+        public bool not_item { get; set; }
+
+        public CI_Manager()
+        {
+            using (var db = new ConfigurationManagmentEntities())
+            {
+                var Obj = db.ConfigurationItems.SqlQuery("select * from ConfigurationItem").ToList();
+                if (Obj.Count() > 0)
+                    not_item = false;
+                else
+                    not_item = true;
+            }
+        }
         public void AddConfigurationItem()
         {
             //INITIAL COMMIT
